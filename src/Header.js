@@ -16,8 +16,8 @@ function Header() {
         />
       </div> 
       <div className='header_right'>
-        <AccountCircleIcon scr='' alt='Anison' />
-        <h4>Anison</h4>
+        <AccountCircleIcon scr={user?.image[0]?.url} alt={user?.display_name} />
+        <h4>{user?.display_name}</h4>
       </div> 
     </div>
   );
