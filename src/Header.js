@@ -19,6 +19,9 @@ function Header() {
         <AccountCircleIcon scr={user?.image[0]?.url} alt={user?.display_name} />
         <h4>{user?.display_name}</h4>
       </div> 
+      <div>
+        
+      </div>
     </div>
   );
 }

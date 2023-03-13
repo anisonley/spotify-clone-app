@@ -21,9 +21,17 @@ console.log(action);
         ...state,
         token: action.token
       }
+
+
+    case "SET_DISCOVER_WEEKLY":
+      return {
+        ...state,
+        discover_weekly: action.discover_weekly,
+      };
+
       default:
         return state;
-  };
+};
 };
 
 export default reducer;
