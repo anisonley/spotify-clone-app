@@ -8,3 +8,31 @@
   height: 100vh;
   background-color: white;
 }
+
+.sidebar_logo{
+  margin-right: auto;
+  height: 70px;
+  padding-top: 20px;
+  padding-left: 20px;
+  padding-right: 10px;
+  align-items: center;
+  color: rgb(255, 178, 64);
+}
+
+.sidebar_logo::after{
+  content: "Music";
+  color: black;
+  }
+
+sidebarOption{
+  text-align: center;
+}
+
+.sidebar_section1{
+  text-align: justify;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-left: 25px;
+  padding-right: 20px;
+  opacity: .8;
+}
