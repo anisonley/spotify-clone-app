@@ -10,9 +10,12 @@ import SwitchAccessShortcutAddOutlinedIcon from '@mui/icons-material/SwitchAcces
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import GroupsIcon from '@mui/icons-material/Groups';
 import StarIcon from '@mui/icons-material/Star';
+import { useDataLayerValue } from './DataLayer';
 
 function Sidebar() {
-  
+  const [{ playlists }] = useDataLayerValue();
+  console.log(playlists);
+
   return (
     <div className='sidebar'>
       <h1 className='sidebar_logo'>Bee</h1>
@@ -32,7 +35,13 @@ function Sidebar() {
       <SidebarOption Icon={FavoriteIcon} title='Favorite Songs' />
       <SidebarOption Icon={GroupsIcon} title='Artist' />
       <SidebarOption Icon={StarIcon} title='Albums' />
-
+      
+      <br />
+      <strong className="sidebar__title">PLAYLISTS</strong>
+      <hr />
+      {playlists?.items?.map((playlist) => (
+        <SidebarOption option={playlist.name} />
+      ))}
     </div>
   );
 }

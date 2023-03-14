@@ -3,7 +3,7 @@ export const initialState = {
   playlists: [],
   playing: false,
   item: null,
-  token: "BQDm666Gz-IlHwjmXHVDLs6pSF1N6tinv44rU89XYXZRTgiVua7JvW",
+  token: null,
 };
 
 const reducer = (state, action) => {
@@ -15,6 +15,12 @@ console.log(action);
         ...state,
         user: action.user,
       };
+
+      case "SET_PLAYING":
+        return {
+          ...state,
+          playing: action.playing,
+        };
 
     case 'SET_TOKEN':
       return{
@@ -28,7 +34,18 @@ console.log(action);
         ...state,
         discover_weekly: action.discover_weekly,
       };
+      
+    case "SET_SPOTIFY":
+      return {
+        ...state,
+        spotify: action.spotify,
+      };
 
+    case "SET_PLAYLISTS":
+      return {
+        ...state,
+        playlists: action.playlists,
+      };
       default:
         return state;
 };

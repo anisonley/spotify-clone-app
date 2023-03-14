@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './Footer.css';
 import PlayCircleFilledWhiteIcon from '@mui/icons-material/PlayCircleFilledWhite';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
@@ -9,24 +9,105 @@ import PlaylistPlayIcon from '@mui/icons-material/PlaylistPlay';
 import VolumeDownIcon from '@mui/icons-material/VolumeDown';
 import Slider from '@mui/material/Slider';
 import Grid from '@mui/material/Grid';
+import { useDataLayerValue } from './DataLayer';
 
-function Footer() {
+function Footer({ spotify }) {
+  const [{ item, playing }, dispatch] = useDataLayerValue();
+
+  useEffect(() => {
+    spotify.getMyCurrentPlaybackState().then((r) => {
+      console.log(r);
+
+      dispatch({
+        type: "SET_PLAYING",
+        playing: r.is_playing,
+      });
+
+      dispatch({
+        type: "SET_ITEM",
+        item: r.item,
+      });
+    });
+  }, [spotify,  dispatch]);
+
+  const handlePlayPause = () => {
+    if (playing) {
+      spotify.pause();
+      dispatch({
+        type: "SET_PLAYING",
+        playing: false,
+      });
+    } else {
+      spotify.play();
+      dispatch({
+        type: "SET_PLAYING",
+        playing: true,
+      });
+    }
+  };
+
+  const skipNext = () => {
+    spotify.skipToNext();
+    spotify.getMyCurrentPlayingTrack().then((r) => {
+      dispatch({
+        type: "SET_ITEM",
+        item: r.item,
+      });
+      dispatch({
+        type: "SET_PLAYING",
+        playing: true,
+      });
+    });
+  };
+
+  const skipPrevious = () => {
+    spotify.skipToPrevious();
+    spotify.getMyCurrentPlayingTrack().then((r) => {
+      dispatch({
+        type: "SET_ITEM",
+        item: r.item,
+      });
+      dispatch({
+        type: "SET_PLAYING",
+        playing: true,
+      });
+    });
+  };
+
   return (
     <div className='footer'>
       <div className='footer_left'>
         <img className='footer_albumLogo' 
-          src='https://is3-ssl.mzstatic.com/image/thumb/Music123/v4/30/51/af/3051afca-a867-4394-4f27-af04b0437577/628810846375.png/400x400cc.jpg' alt='My Baby by Sinmidele' />
+          src={item?.album.images[0].url}
+          alt={item?.name} />
+          {item ? (
         <div className='footer_songInfo'>
-          <h4>My Baby </h4>
-          <p>Sinmidele</p>
+            <h4>{item.name}</h4>
+            <p>{item.artists.map((artist) => artist.name).join(", ")}</p>
         </div>
+        ) : (
+          <div className="footer__songInfo">
+          <h4>No song is playing</h4>
+          <p>...</p>
+        </div>
+      )}
       </div>
 
       <div className='footer_center'>
         <RepeatIcon className='footer_black' />
-        <SkipPreviousIcon className='footer_icon' />
-        <PlayCircleFilledWhiteIcon fontSize='large' className='footer_icon' />
-        <SkipNextIcon className='footer_icon'/>
+        <SkipPreviousIcon onClick={skipNext} className='footer_icon' />
+        {playing ? ( 
+        <PlayCircleFilledWhiteIcon 
+          fontSize='large'   
+          onClick={handlePlayPause} 
+          className='footer_icon' />
+        ) : (
+          <PlayCircleFilledWhiteIcon 
+          fontSize='large'   
+          onClick={handlePlayPause} 
+          className='footer_icon' />
+        )}
+        <SkipNextIcon onClick={skipPrevious} className='footer_icon'/>
         <ShuffleIcon className='footer_black' />
         </div>
 
@@ -46,6 +127,6 @@ function Footer() {
         </div>
     </div>
   )
-}
+};
 
-export default Footer
+export default Footer;
